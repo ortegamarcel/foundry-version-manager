@@ -2,5 +2,6 @@
   "version": "1.0.0",
   "foundryPath": "/home/user/foundryvtt",
   "dataPath": "/home/user/foundrydata/dev",
-  "systems": []
+  "systems": [],
+  "modules": []
 }
