@@ -5,6 +5,9 @@ import config from "./config.json";
 import axios from "axios";
 import path from "path";
 import AdmZip from "adm-zip";
+import { StartOptions } from "./types/start-options.class";
+import { System } from "./types/system.type";
+import { SystemConfig } from "./types/system-config.type";
 
 // Keywords used for semantic coloring. Used by `registerChildProcess()`.
 let successKeywords: string[] = [];
@@ -139,17 +142,6 @@ function getFoundryVersionPrompt(): ListQuestion {
   };
 }
 
-type System = {
-  /** The name of the system. Will be shown to the user. */
-  name: string;
-  /** The version name. Will be shown to the user. */
-  version: string;
-  /** The url to the systems zip file. */
-  url: string;
-};
-
-type SystemConfig = { name: string; versions: { name: string; url: string }[] };
-
 function getSystemConfigs(): SystemConfig[] {
   return config.systems ?? ([] as unknown as SystemConfig[]);
 }
@@ -232,18 +224,6 @@ function getFolderNameFromUrl(url: string): string {
 /** Replaces all characters of `str` that are not a letter, number or "_" with "-". */
 function getFolderName(str: string): string {
   return str.replace(/[^a-zA-Z0-9_-]/g, "-");
-}
-
-class StartOptions {
-  foundryPath: string;
-  dataPath: string;
-  foundryVersion: string;
-
-  constructor(foundryVersion: string) {
-    this.foundryPath = config.foundryPath;
-    this.dataPath = config.dataPath;
-    this.foundryVersion = foundryVersion;
-  }
 }
 
 /**
@@ -378,6 +358,9 @@ async function run(question?: Question) {
     foundryVersion = answer.foundryVersion;
     if (config.systems?.length) {
       run(getSystemPrompt());
+    } else {
+      const startOptions = new StartOptions(foundryVersion);
+      startFoundry(startOptions!);
     }
   }
 
@@ -390,10 +373,9 @@ async function run(question?: Question) {
   if (answer.system) {
     const systemPath = await loadSystem(answer.system);
     await applySystem(systemPath);
+    const startOptions = new StartOptions(foundryVersion);
+    startFoundry(startOptions!);
   }
-
-  const startOptions = new StartOptions(foundryVersion);
-  startFoundry(startOptions!);
 }
 
 run();
