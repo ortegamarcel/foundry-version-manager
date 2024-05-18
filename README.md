@@ -1,6 +1,8 @@
 # Foundry Version Manager
 
-A tool to manage different foundry and system versions. Useful for development.
+With this tool you can easily start foundry with any system-module-foundry-version-combination you want.
+
+For Example: When you are developing own modules and want to check if it is compatible with different foundry and game system versions. Or want to check different behaviour on your latest development branch or the latest release.
 
 > Disclaimer: I use Linux for development. Nonetheless, I try to make it work on Windows as well, but there is no guarantee that it will work. When there are any problems, you can create an Issue.
 
