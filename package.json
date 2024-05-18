@@ -1,6 +1,6 @@
 {
   "name": "foundry-version-manager",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "tool to manage foundry and systems versions",
   "main": "start-foundry.ts",
   "scripts": {
