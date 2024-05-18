@@ -1,0 +1,32 @@
+{
+  "name": "foundry-version-manager",
+  "version": "0.0.1",
+  "description": "tool to manage foundry and systems versions",
+  "main": "start-foundry.ts",
+  "scripts": {
+    "start": "ts-node start-foundry.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ortegamarcel/foundry-version-manager.git"
+  },
+  "keywords": [
+    "foundryvtt",
+    "pnp"
+  ],
+  "author": "M. Ortega",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/ortegamarcel/foundry-version-manager/issues"
+  },
+  "homepage": "https://github.com/ortegamarcel/foundry-version-manager#readme",
+  "dependencies": {
+    "child_process": "^1.0.2",
+    "inquirer": "^8.2.6",
+    "ts-node": "^10.9.2"
+  },
+  "devDependencies": {
+    "@types/inquirer": "^9.0.7"
+  }
+}
