@@ -26,7 +26,6 @@ You can specify different systems and versions in the config file. This is usefu
 
 ```json
 {
-  "version": "1.0.0",
   "foundryPath": "/home/user/foundryvtt",
   "dataPath": "/home/user/foundrydata/dev",
   "systems": [
@@ -57,8 +56,8 @@ You can specify different modules and versions in the config file. This is usefu
 
 ```json
 {
-  "foundryPath": "/home/marcelortega/foundryvtt",
-  "dataPath": "/home/marcelortega/foundrydata/dev",
+  "foundryPath": "/home/user/foundryvtt",
+  "dataPath": "/home/user/foundrydata/dev",
   "systems": [],
   "modules": [
     {
