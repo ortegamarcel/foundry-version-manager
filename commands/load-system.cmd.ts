@@ -9,6 +9,7 @@ import {
 } from "../utils/get-folder-name.util";
 import { logError, logInfo, logSuccess } from "../utils/logger.util";
 
+/** Loads the system/module from the cache. Downloads it first if it doesn't exist. */
 export async function loadSystem(
   system: System,
   systemType: SystemType
@@ -24,19 +25,21 @@ export async function loadSystem(
     versionFolderName
   );
 
-  const prefix = `[${system.name} - ${system.version}]`;
+  const name = `"${system.name} - ${system.version}"`;
 
   try {
-    logInfo(`${prefix} Checking cache...`);
+    logInfo(`Checking cache for ${name}...`);
     if (!(await fs.pathExists(cacheDir))) {
       // Ensure the cache directory exists
-      logInfo(`${prefix} Preparing cache...`);
+      logInfo(`Preparing cache for ${name}...`);
       await fs.ensureDir(cacheDir);
 
       // Download the systems zip file
-      logInfo(`${prefix} Downloading ${systemType.toLowerCase()} zip file...`);
+      logInfo(
+        `Downloading ${systemType.toLowerCase()} zip file from ${system.url}...`
+      );
       const loadingAnimation = setInterval(
-        () => logInfo(`${prefix} Still downloading...`),
+        () => logInfo(`Still downloading...`),
         2500
       );
       const response = await axios.get(system.url, {
@@ -51,17 +54,18 @@ export async function loadSystem(
       );
 
       // Save the downloaded zip file to the file system/module
-      logInfo(`${prefix} Saving ${systemType.toLowerCase()} zip file...`);
+      logInfo(`Saving ${name}...`);
       await fs.writeFile(zipFilePath, response.data);
 
       // Extract the zip file to a temporary directory
-      logInfo(`${prefix} Extracting ${systemType.toLowerCase()} zip file...`);
+      logInfo(`Extracting ${name}...`);
       const tempExtractDir = path.join(cacheDir, "temp");
       await fs.ensureDir(tempExtractDir);
       const zip = new AdmZip(zipFilePath);
       zip.extractAllTo(tempExtractDir, true);
 
       // Find the systemContent directory containing system.json/module.json
+      logInfo(`Updating cache for ${name}...`);
       const systemJsonPath = await findSystemJson(tempExtractDir, systemType);
       const systemContentDir = path.dirname(systemJsonPath);
 
@@ -71,17 +75,11 @@ export async function loadSystem(
       // Remove the temporary directory and the zip file after extraction
       await fs.remove(tempExtractDir);
       await fs.remove(zipFilePath);
-
-      logSuccess(
-        `${prefix} ${systemType.toLowerCase()} downloaded and cached successfully.`
-      );
     } else {
-      logSuccess(`${prefix} Loaded ${systemType.toLowerCase()} from cache.`);
+      logInfo(`Loaded ${name} from cache.`);
     }
   } catch (error) {
-    logError(
-      `${prefix} Error downloading and extracting the ${systemType.toLowerCase()}`
-    );
+    logError(`Error downloading and extracting ${name}`);
     throw error;
   }
 

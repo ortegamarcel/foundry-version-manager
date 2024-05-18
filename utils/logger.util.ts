@@ -13,7 +13,7 @@ export function logWarning(msg: string) {
 }
 
 export function logInfo(msg: string) {
-  log(msg, Color.Blue);
+  log(msg, Color.Default);
 }
 
 export function log(msg = "", color = Color.Default) {

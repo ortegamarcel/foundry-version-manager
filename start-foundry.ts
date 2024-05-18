@@ -10,6 +10,7 @@ import {
 import { applySystem, loadSystem, startFoundry } from "./commands";
 import { getModuleConfigs } from "./utils/config.util";
 import { System, SystemType } from "./types/system.type";
+import { log } from "./utils/logger.util";
 
 let answers = {
   startFoundry: false,
@@ -38,6 +39,8 @@ async function run() {
       await ask(getModuleVersionPrompt(module));
     }
   }
+
+  log();
 
   const systemPath = await loadSystem(answers.system, SystemType.SYSTEM);
   await applySystem(systemPath, answers.system, SystemType.SYSTEM);

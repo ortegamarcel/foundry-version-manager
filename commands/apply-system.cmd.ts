@@ -1,5 +1,5 @@
 import path from "path";
-import { logError, logInfo } from "../utils/logger.util";
+import { logError, logInfo, logSuccess } from "../utils/logger.util";
 import config from "../config.json";
 import fs from "fs-extra";
 import { System, SystemType } from "../types/system.type";
@@ -15,7 +15,7 @@ export async function applySystem(
   system: System,
   systemType: SystemType
 ): Promise<void> {
-  const prefix = `[${system.name} - ${system.version}]`;
+  const name = `"${system.name} - ${system.version}"`;
 
   try {
     const systemJsonPath = path.join(
@@ -23,11 +23,13 @@ export async function applySystem(
       `${systemType.toLowerCase()}.json`
     );
 
-    logInfo(`${prefix} Loading ${systemType.toLowerCase()} id...`);
+    logInfo(`Loading ${systemType.toLowerCase()} id of ${name}...`);
 
     // Check if system.json/module.json file exists
     if (!(await fs.pathExists(systemJsonPath))) {
-      logError(`${prefix} Could not load ${systemType.toLowerCase()} id`);
+      logError(
+        `${name} Could not load ${systemType.toLowerCase()} id of ${name}`
+      );
       return;
     }
 
@@ -46,17 +48,20 @@ export async function applySystem(
     );
 
     // Check if the target folder already exists and delete it if it does
-    logInfo(`${prefix} Checking if old ${systemType.toLowerCase()} exists...`);
+    logInfo(`Checking for old copy of ${name}...`);
     if (await fs.pathExists(targetFolderPath)) {
-      logInfo(`${prefix} Deleting old ${systemType.toLowerCase()}...`);
+      logInfo(`Deleting old copy of ${name}...`);
       await fs.remove(targetFolderPath);
     }
 
     // Copy the folder from systemPath to the target folder
-    logInfo(`${prefix} Applying new ${systemType.toLowerCase()}...`);
+    logInfo(`Applying ${name}...`);
     await fs.copy(systemPath, targetFolderPath);
+    logSuccess(
+      `${name}-${systemType.toLowerCase()} downloaded, cached and applied successfully.`
+    );
   } catch (error) {
-    logError(`${prefix} Error applying ${systemType.toLowerCase()}`);
+    logError(`Error applying ${name}`);
     throw error;
   }
 }
