@@ -20,7 +20,7 @@ To can download Foundry as zip file from the website (under your personal dashbo
 
 # Manage different System versions
 
-You can specify different system versions in the config file. For example:
+You can specify different systems and versions in the config file. This is useful, when there are many forks of the same system. For example:
 
 ```json
 {
@@ -42,6 +42,46 @@ You can specify different system versions in the config file. For example:
         {
           "name": "latest (by Stexinator)",
           "url": "https://github.com/Stexinator/TheWitcherTRPG/releases/latest/download/system.zip"
+        }
+      ]
+    }
+  ]
+}
+```
+
+# Manage different module versions
+
+You can specify different modules and versions in the config file. This is useful, when there are many forks, releases or branches of the same module that you want to test. For example:
+
+```json
+{
+  "foundryPath": "/home/marcelortega/foundryvtt",
+  "dataPath": "/home/marcelortega/foundrydata/dev",
+  "systems": [],
+  "modules": [
+    {
+      "name": "Token Action HUD - TheWitcherTRPG",
+      "versions": [
+        {
+          "name": "development",
+          "url": "https://github.com/ortegamarcel/fvtt-token-action-hud-thewitchertrpg/archive/refs/heads/main.zip"
+        },
+        {
+          "name": "latest release",
+          "url": "https://github.com/ortegamarcel/fvtt-token-action-hud-thewitchertrpg/releases/latest/download/module.zip"
+        }
+      ]
+    },
+    {
+      "name": "Gwent - The Dice Game",
+      "versions": [
+        {
+          "name": "development",
+          "url": "https://github.com/ortegamarcel/fvtt-gwent/archive/refs/heads/main.zip"
+        },
+        {
+          "name": "latest release",
+          "url": "https://github.com/ortegamarcel/fvtt-gwent/releases/latest/download/module.zip"
         }
       ]
     }
