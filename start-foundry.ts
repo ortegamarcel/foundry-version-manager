@@ -148,9 +148,15 @@ type System = {
   url: string;
 };
 
+type SystemConfig = { name: string; versions: { name: string; url: string }[] };
+
+function getSystemConfigs(): SystemConfig[] {
+  return config.systems ?? ([] as unknown as SystemConfig[]);
+}
+
 /** Returns the names of all configured systems. */
 function getSystems(): string[] {
-  return config.systems.map((system) => system.name);
+  return getSystemConfigs().map((system) => system.name);
 }
 
 /**
@@ -169,7 +175,9 @@ function getSystemPrompt(): ListQuestion {
 
 /** Returns a list of System for each configured version of it. */
 function getSystemVersions(systemName: string): System[] {
-  const system = config.systems.find((system) => system.name === systemName);
+  const system = getSystemConfigs().find(
+    (system) => system.name === systemName
+  );
   if (!system) {
     logError(
       "There is a problem with the script. Please create an issue under https://github.com/ortegamarcel/foundry-version-manager/issues."
@@ -368,7 +376,9 @@ async function run(question?: Question) {
   // Handle Prompt 1: Which foundry version do you want to start?
   if (answer.foundryVersion) {
     foundryVersion = answer.foundryVersion;
-    run(getSystemPrompt());
+    if (config.systems?.length) {
+      run(getSystemPrompt());
+    }
   }
 
   // Handle Prompt 2: Which system do you want to start?
@@ -378,11 +388,12 @@ async function run(question?: Question) {
 
   // Handle Prompt 3: Which system version do you want to start?
   if (answer.system) {
-    const startOptions = new StartOptions(foundryVersion);
     const systemPath = await loadSystem(answer.system);
     await applySystem(systemPath);
-    startFoundry(startOptions!);
   }
+
+  const startOptions = new StartOptions(foundryVersion);
+  startFoundry(startOptions!);
 }
 
 run();
