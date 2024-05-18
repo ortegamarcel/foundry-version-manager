@@ -1,4 +1,6 @@
 {
-  "version": "0.0.1",
-  "foundryPath": "/home/marcelortega/foundryvtt"
+  "version": "1.0.0",
+  "foundryPath": "/home/user/foundryvtt",
+  "dataPath": "/home/user/foundrydata/dev",
+  "systems": []
 }

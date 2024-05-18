@@ -18,6 +18,37 @@ A tool to manage different foundry and system versions. Useful for development.
 
 To can download Foundry as zip file from the website (under your personal dashboard). Then simply unpack it inside the version folder.
 
+# Manage different System versions
+
+You can specify different system versions in the config file. For example:
+
+```json
+{
+  "version": "1.0.0",
+  "foundryPath": "/home/user/foundryvtt",
+  "dataPath": "/home/user/foundrydata/dev",
+  "systems": [
+    {
+      "name": "The Witcher TRPG",
+      "versions": [
+        {
+          "name": "latest (by ortegamarcel)",
+          "url": "https://github.com/ortegamarcel/TheWitcherTRPG/releases/latest/download/system.zip"
+        },
+        {
+          "name": "latest (by AnthonyMonette)",
+          "url": "https://github.com/AnthonyMonette/TheWitcherTRPG/releases/latest/download/system.zip"
+        },
+        {
+          "name": "latest (by Stexinator)",
+          "url": "https://github.com/Stexinator/TheWitcherTRPG/releases/latest/download/system.zip"
+        }
+      ]
+    }
+  ]
+}
+```
+
 # Run FoundryVTT
 
 Run `npm start` inside the root folder and follow the instructions.

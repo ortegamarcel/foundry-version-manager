@@ -1,3 +1,7 @@
+# Foundry Version Manager Cache
+
+.cache
+
 # Logs
 logs
 *.log

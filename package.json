@@ -22,11 +22,17 @@
   },
   "homepage": "https://github.com/ortegamarcel/foundry-version-manager#readme",
   "dependencies": {
+    "adm-zip": "^0.5.12",
+    "axios": "^1.6.8",
     "child_process": "^1.0.2",
+    "fs-extra": "^11.2.0",
     "inquirer": "^8.2.6",
     "ts-node": "^10.9.2"
   },
   "devDependencies": {
-    "@types/inquirer": "^9.0.7"
+    "@types/adm-zip": "^0.5.5",
+    "@types/fs-extra": "^11.0.4",
+    "@types/inquirer": "^9.0.7",
+    "@types/node": "^20.12.12"
   }
 }
