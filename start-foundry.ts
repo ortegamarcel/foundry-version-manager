@@ -3,47 +3,52 @@ import config from "./config.json";
 import { StartOptions } from "./types/start-options.class";
 import {
   getFoundryVersionPrompt,
+  getModuleVersionPrompt,
   getSystemPrompt,
   getSystemVersionPrompt,
 } from "./prompts";
 import { applySystem, loadSystem, startFoundry } from "./commands";
+import { getModuleConfigs } from "./utils/config.util";
+import { System, SystemType } from "./types/system.type";
 
-let foundryVersion: string;
+let answers = {
+  startFoundry: false,
+  modules: [] as System[],
+  foundryVersion: "",
+  system: {} as System,
+  systemName: "",
+};
 
-async function run(question?: Question) {
-  if (!question) {
-    question = getFoundryVersionPrompt();
-  }
+async function ask(question?: Question) {
+  // Merge new answer into allAnswers
   const answer = await inquirer.prompt([question]);
+  answers = Object.assign({}, answers, answer, {
+    ...(answer.modules && { modules: [...answers.modules, answer.modules] }),
+  });
+}
 
-  if (Object.values(answer)[0] === "cancel") {
-    run(getFoundryVersionPrompt());
-    return;
+async function run() {
+  await ask(getFoundryVersionPrompt());
+  if (config.systems?.length) {
+    await ask(getSystemPrompt());
+    await ask(getSystemVersionPrompt(answers.systemName));
   }
-
-  // Handle Prompt 1: Which foundry version do you want to start?
-  if (answer.foundryVersion) {
-    foundryVersion = answer.foundryVersion;
-    if (config.systems?.length) {
-      run(getSystemPrompt());
-    } else {
-      const startOptions = new StartOptions(foundryVersion);
-      startFoundry(startOptions!);
+  if (config.modules?.length) {
+    for (const module of getModuleConfigs()) {
+      await ask(getModuleVersionPrompt(module));
     }
   }
 
-  // Handle Prompt 2: Which system do you want to start?
-  if (answer.systemName) {
-    run(getSystemVersionPrompt(answer.systemName));
+  const systemPath = await loadSystem(answers.system, SystemType.SYSTEM);
+  await applySystem(systemPath, answers.system, SystemType.SYSTEM);
+
+  for (const module of answers.modules) {
+    const modulePath = await loadSystem(module, SystemType.MODULE);
+    await applySystem(modulePath, module, SystemType.MODULE);
   }
 
-  // Handle Prompt 3: Which system version do you want to start?
-  if (answer.system) {
-    const systemPath = await loadSystem(answer.system);
-    await applySystem(systemPath);
-    const startOptions = new StartOptions(foundryVersion);
-    startFoundry(startOptions!);
-  }
+  const startOptions = new StartOptions(answers.foundryVersion);
+  startFoundry(startOptions!);
 }
 
 run();

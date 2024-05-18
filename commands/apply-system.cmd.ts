@@ -2,20 +2,36 @@ import path from "path";
 import { logError, logInfo } from "../utils/logger.util";
 import config from "../config.json";
 import fs from "fs-extra";
+import { System, SystemType } from "../types/system.type";
 
-export async function applySystem(systemPath: string): Promise<void> {
+/**
+ * Copies the system/module to the foundry data folder.
+ * @param systemPath The local path to the system folder
+ * @param system only used to log more info
+ * @param systemType if it is a system or module
+ */
+export async function applySystem(
+  systemPath: string,
+  system: System,
+  systemType: SystemType
+): Promise<void> {
+  const prefix = `[${system.name} - ${system.version}]`;
+
   try {
-    const systemJsonPath = path.join(systemPath, "system.json");
+    const systemJsonPath = path.join(
+      systemPath,
+      `${systemType.toLowerCase()}.json`
+    );
 
-    logInfo("Loading system id...");
+    logInfo(`${prefix} Loading ${systemType.toLowerCase()} id...`);
 
-    // Check if system.json file exists
+    // Check if system.json/module.json file exists
     if (!(await fs.pathExists(systemJsonPath))) {
-      logError("Could not load system id");
-      process.exit(1);
+      logError(`${prefix} Could not load ${systemType.toLowerCase()} id`);
+      return;
     }
 
-    // Read the system.json file
+    // Read the system.json/module.json file
     const systemData = await fs.readJson(systemJsonPath);
 
     // Extract the target folder name from the id property
@@ -24,22 +40,23 @@ export async function applySystem(systemPath: string): Promise<void> {
     // Define the target path based on the systemPath's folder name
     const targetFolderPath = path.join(
       config.dataPath,
-      "Data/systems",
+      "Data",
+      systemType === SystemType.SYSTEM ? "systems" : "modules",
       targetFolderName
     );
 
     // Check if the target folder already exists and delete it if it does
-    logInfo("Checking if old system exists...");
+    logInfo(`${prefix} Checking if old ${systemType.toLowerCase()} exists...`);
     if (await fs.pathExists(targetFolderPath)) {
-      logInfo(`Deleting old system...`);
+      logInfo(`${prefix} Deleting old ${systemType.toLowerCase()}...`);
       await fs.remove(targetFolderPath);
     }
 
     // Copy the folder from systemPath to the target folder
-    logInfo("Applying new system...");
+    logInfo(`${prefix} Applying new ${systemType.toLowerCase()}...`);
     await fs.copy(systemPath, targetFolderPath);
   } catch (error) {
-    logError("Error applying system");
+    logError(`${prefix} Error applying ${systemType.toLowerCase()}`);
     throw error;
   }
 }

@@ -6,3 +6,8 @@ export type System = {
   /** The url to the systems zip file. */
   url: string;
 };
+
+export enum SystemType {
+  SYSTEM = "SYSTEM",
+  MODULE = "MODULE",
+}
