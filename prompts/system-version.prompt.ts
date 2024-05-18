@@ -1,5 +1,4 @@
 import { ListQuestion } from "inquirer";
-import { CANCEL_CHOICE } from "./cancel-choice";
 import { System } from "../types/system.type";
 import { logError } from "../utils/logger.util";
 import { getSystemConfigs } from "../utils/config.util";
@@ -35,12 +34,9 @@ export function getSystemVersionPrompt(systemName: string): ListQuestion {
     type: "list",
     name: "system",
     message: "Which system version do you want to use?",
-    choices: [
-      ...systemVersions.map((systemVersion) => ({
-        name: systemVersion.version,
-        value: systemVersion,
-      })),
-      CANCEL_CHOICE,
-    ],
+    choices: systemVersions.map((systemVersion) => ({
+      name: systemVersion.version,
+      value: systemVersion,
+    })),
   };
 }

@@ -7,7 +7,7 @@ import {
   getFolderName,
   getFolderNameFromUrl,
 } from "../utils/get-folder-name.util";
-import { logError, logInfo, logSuccess } from "../utils/logger.util";
+import { logError, logInfo } from "../utils/logger.util";
 
 /** Loads the system/module from the cache. Downloads it first if it doesn't exist. */
 export async function loadSystem(

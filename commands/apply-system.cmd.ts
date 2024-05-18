@@ -57,9 +57,7 @@ export async function applySystem(
     // Copy the folder from systemPath to the target folder
     logInfo(`Applying ${name}...`);
     await fs.copy(systemPath, targetFolderPath);
-    logSuccess(
-      `${name}-${systemType.toLowerCase()} downloaded, cached and applied successfully.`
-    );
+    logSuccess(`${name}-${systemType.toLowerCase()} applied successfully.`);
   } catch (error) {
     logError(`Error applying ${name}`);
     throw error;

@@ -1,5 +1,4 @@
 import { ListQuestion } from "inquirer";
-import { CANCEL_CHOICE } from "./cancel-choice";
 import { SystemConfig } from "../types/system-config.type";
 import { System } from "../types/system.type";
 import { getModuleConfigs } from "../utils/config.util";
@@ -36,12 +35,9 @@ export function getModuleVersionPrompt(module: SystemConfig): ListQuestion {
     type: "list",
     name: "modules",
     message: `Which version of "${module.name}" do you want to use?`,
-    choices: [
-      ...versions.map((moduleVersion) => ({
-        name: moduleVersion.version,
-        value: moduleVersion,
-      })),
-      CANCEL_CHOICE,
-    ],
+    choices: versions.map((moduleVersion) => ({
+      name: moduleVersion.version,
+      value: moduleVersion,
+    })),
   };
 }
