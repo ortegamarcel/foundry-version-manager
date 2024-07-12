@@ -4,7 +4,7 @@ With this tool you can easily start foundry with any system-module-foundry-versi
 
 For Example: When you are developing own modules and want to check if it is compatible with different foundry and game system versions. Or want to check different behaviour on your latest development branch or the latest release.
 
-> Disclaimer: I use Linux for development. Nonetheless, I try to make it work on Windows as well, but there is no guarantee that it will work. When there are any problems, you can create an Issue.
+Works on Linux and Windows.
 
 # Setup
 
@@ -89,6 +89,14 @@ You can specify different modules and versions in the config file. This is usefu
   ]
 }
 ```
+
+# Don't forget dependencies
+
+Dependencies of both systems and modules are not automatically installed and should therefore also be configured.
+
+# Don't forget to enable modules
+
+This script only downloads and installs modules (and systems) but does not enable them for your world. You still need to do that manually.
 
 # Run FoundryVTT
 
