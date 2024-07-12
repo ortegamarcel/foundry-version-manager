@@ -8,7 +8,7 @@ export async function startFoundry(startOptions: StartOptions): Promise<void> {
   logInfo("Starting Foundry...");
   log();
   const startFoundryCmd = execute(
-    `node ${startOptions.foundryPath}/${startOptions.foundryVersion}/resources/app/main.js --dataPath=${startOptions.dataPath}`
+    `node "${startOptions.foundryPath}/${startOptions.foundryVersion}/resources/app/main.js" --dataPath="${startOptions.dataPath}"`
   );
   registerChildProcess(startFoundryCmd);
 }
