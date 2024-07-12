@@ -1,5 +1,10 @@
 import path from "path";
-import { logError, logInfo, logSuccess } from "../utils/logger.util";
+import {
+  logError,
+  logInfo,
+  logSuccess,
+  logWarning,
+} from "../utils/logger.util";
 import config from "../config.json";
 import fs from "fs-extra";
 import { System, SystemType } from "../types/system.type";
@@ -37,7 +42,15 @@ export async function applySystem(
     const systemData = await fs.readJson(systemJsonPath);
 
     // Extract the target folder name from the id property
-    const targetFolderName = systemData.id;
+    const targetFolderName = systemData.id ?? systemData.name;
+
+    if (!systemData.id) {
+      logWarning(
+        `${name} has no id. Using name as fallback. That might cause some problems. If so, configure another source url for that ${
+          systemType === SystemType.SYSTEM ? "system" : "module"
+        }.`
+      );
+    }
 
     // Define the target path based on the systemPath's folder name
     const targetFolderPath = path.join(
